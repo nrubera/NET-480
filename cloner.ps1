@@ -1,3 +1,5 @@
+$vmtoclone = Read-Host -Prompt 'Please enter the name of the VM you want to clone'
+$newname = Read-Host -Prompt 'Please enter the new name for the cloned VM'
 
 function cloner($vmtoclone, $newname){
     try {
