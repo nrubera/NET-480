@@ -1,10 +1,11 @@
 $vmtoclone = Read-Host -Prompt 'Please enter the name of the VM you want to clone'
 $newname = Read-Host -Prompt 'Please enter the new name for the cloned VM'
+$snapname = Read-Host -Prompt 'Please state the name of the snapshot you wish to clone from'
 
 function cloner($vmtoclone, $newname){
     try {
     	$vm=get-vm -name $vmtoclone
-        $snapshot=get-snapshot -VM $vm -name "Base"
+        $snapshot=get-snapshot -VM $vm -name $snapname
         $vmhost=get-vmhost -name "192.168.7.18"
         $ds=Get-Datastore -name super8-datastore1
 
