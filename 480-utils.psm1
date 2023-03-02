@@ -110,3 +110,56 @@ function cloner([string] $vmtoclone){
 }
 
 
+# Milestone 6 Functions
+
+#Deliverable 1
+function get-NetInfo (){
+    param (
+        [Parameter(Mandatory=$true)][string]$VMname
+    )
+
+    $vm_net= Get-VM -Name $VMname
+
+    $macaddr = $($vm_net | Get-NetworkAdapter).MacAddress
+    $netname = $($vm_net | Get-NetworkAdapter).NetworkName
+    $ip = ($vm_net.Guest.IPAddress)[0]
+
+    Write-Host  "Your Hostname is: " $vm_net
+    Write-Host "Your IP is: " $ip
+    Write-Host  "The MAC address is: " $macaddr
+    Write-Host "Network Adapter 1 is connected to: " $netname
+}
+
+function new-switch ([string] $newSwitch){
+
+    New-VirtualSwitch -VMHost "192.168.7.18" -Name $newSwitch | New-VirtualPortGroup -Name "$newSwitch-pg"
+}
+
+# Deliverable 3
+function turnOn (){
+
+    param (
+        [Parameter(Mandatory=$true)][string]$Name
+    )
+
+    $vm = Get-VM -Name $Name
+
+    if ($vm.PowerState -eq "PoweredOff"){
+        Write-Host -ForegroundColor Yellow "Booting up now..."
+        Start-VM -VM $vm -Confirm -RunAsync
+    } else {
+        Write-Host  -ForegroundColor Green "Machine $($vm.Name) is already running"
+    }
+}
+
+# Deliverable 4
+
+function set-network (){
+
+    param (
+        [Parameter(Mandatory=$true)][string]$VMName,
+        [Parameter(Mandatory=$true)][string]$Network
+    )
+
+    Get-VM -Name $VMName | Get-NetworkAdapter | Set-NetworkAdapter -NetworkName $Network
+}
